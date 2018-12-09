@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="count">
+    <h1 class="header center orange-text">
         total: {{ pagination.getTotalItemCount }}
-    </div>
+    </h1>
     {% for movie in pagination %}
         <div>
             <ul>
