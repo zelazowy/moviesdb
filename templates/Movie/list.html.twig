@@ -1,7 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% for movie in movies %}
+    <div class="count">
+        total: {{ pagination.getTotalItemCount }}
+    </div>
+    {% for movie in pagination %}
         <div>
             <ul>
                 <li>title: {{ movie.title }}</li>
@@ -9,4 +12,8 @@
             </ul>
         </div>
     {% endfor %}
+
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
 {% endblock %}

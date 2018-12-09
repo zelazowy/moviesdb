@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Movie;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,12 +13,13 @@ class MovieController extends AbstractController
 {
     /**
      * {@inheritdoc}
-     * @Route("/", name="movie_list")
+     * @Route("/{page}", name="movie_list", defaults={"page"=1})
      */
-    public function listController(EntityManagerInterface $entityManager): Response
+    public function listController(EntityManagerInterface $entityManager, PaginatorInterface $paginator, int $page = 1): Response
     {
-        $movies = $entityManager->getRepository(Movie::class)->findAll();
+        $moviesQuery = $entityManager->getRepository(Movie::class)->getAllQuery();
+        $pagination = $paginator->paginate($moviesQuery, $page);
 
-        return $this->render('Movie/list.html.twig', ['movies' => $movies]);
+        return $this->render('Movie/list.html.twig', ['pagination' => $pagination]);
     }
 }
