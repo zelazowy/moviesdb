@@ -5,15 +5,10 @@
         total: {{ pagination.getTotalItemCount }}
     </h1>
     {% for movie in pagination %}
-        <div>
-            <ul>
-                <li>title: {{ movie.title }}</li>
-                <li>tagline: {{ movie.tagline }}</li>
-            </ul>
-        </div>
+        {% include 'Movie/list_item.html.twig' with { 'movie': movie, 'page': pagination.page } only %}
     {% endfor %}
 
-    <div class="navigation">
+    <div class="navigation left-align">
         {{ knp_pagination_render(pagination) }}
     </div>
 {% endblock %}

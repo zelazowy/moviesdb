@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "25f25f6d186471780ce94f767a7ebb47",
+    "content-hash": "73513630f3a929ac312fdaac7a5bee7a",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1407,21 +1407,21 @@
         },
         {
             "name": "knplabs/knp-paginator-bundle",
-            "version": "v2.8.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpPaginatorBundle.git",
-                "reference": "f4ece5b347121b9fe13166264f197f90252d4bd2"
+                "reference": "4ed3597c660270a82d8bbc988367899a8991db3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpPaginatorBundle/zipball/f4ece5b347121b9fe13166264f197f90252d4bd2",
-                "reference": "f4ece5b347121b9fe13166264f197f90252d4bd2",
+                "url": "https://api.github.com/repos/KnpLabs/KnpPaginatorBundle/zipball/4ed3597c660270a82d8bbc988367899a8991db3a",
+                "reference": "4ed3597c660270a82d8bbc988367899a8991db3a",
                 "shasum": ""
             },
             "require": {
                 "knplabs/knp-components": "~1.2",
-                "php": ">=5.3.3",
+                "php": ">=5.6.0",
                 "symfony/framework-bundle": "~2.7|~3.0|~4.0",
                 "twig/twig": "~1.12|~2"
             },
@@ -1465,7 +1465,7 @@
                 "paginator",
                 "symfony"
             ],
-            "time": "2018-05-16T12:15:58+00:00"
+            "time": "2018-11-23T14:14:33+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -6370,7 +6370,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "knplabs/knp-paginator-bundle": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
