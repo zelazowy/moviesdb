@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Movie;
+use App\Form\CommentType;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,8 +30,31 @@ class MovieController extends AbstractController
      * {@inheritdoc}
      * @Route("/movie/{id}", name="movie_details")
      */
-    public function detailsAction(Request $request, Movie $movie): Response
+    public function detailsAction(Request $request, EntityManagerInterface $entityManager, Movie $movie): Response
     {
-        return $this->render('Movie/details.html.twig', ['movie' => $movie, 'page' => $request->query->get('page', 1)]);
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+
+        if ($request->isMethod(Request::METHOD_POST)) {
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+                $comment
+                    ->setMovie($movie)
+                    ->setStatus(Comment::STATUS_NEW);
+
+                $entityManager->persist($comment);
+                $entityManager->flush();
+            }
+        }
+
+        return $this->render(
+            'Movie/details.html.twig',
+            [
+                'movie' => $movie,
+                'page' => $request->query->get('page', 1),
+                'commentForm' => $form->createView(),
+            ]
+        );
     }
 }

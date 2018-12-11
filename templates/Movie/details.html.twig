@@ -1,25 +1,45 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
     <div class="row">
         <div class="col s12 m12">
-            <a class="waves-effect waves-light btn-large blue-grey deep-purple-text lighten-5" href="{{ url('movie_list', { 'page': page }) }}"><i class="material-icons left">arrow_back</i>back</a>
+            <a class="waves-effect waves-light btn-large blue-grey deep-purple-text lighten-5"
+               href="{{ url('movie_list', { 'page': page }) }}"><i class="material-icons left">arrow_back</i>back</a>
 
-            <div class="card blue-grey lighten-5">
-                <div class="card-content deep-purple-text darken-4">
-                    <span class="card-title">
-                        {{ movie.title }}
-                    </span>
-                    <p>
-                        {{ movie.tagline }}
-                    </p>
-                    <hr>
-                    <p>
-                        {{ movie.overview }}
-                    </p>
+            <form name="comment" method="post">
+                <div class="card blue-grey lighten-5">
+                    <div class="card-content deep-purple-text darken-4">
+                        <span class="card-title">
+                            {{ movie.title }}
+                        </span>
+                        <p>
+                            {{ movie.tagline }}
+                        </p>
+                        <hr>
+                        <p>
+                            {{ movie.overview }}
+                        </p>
+
+                        <ul class="collection">
+                            {% for comment in movie.comments %}
+                                <li class="collection-item">
+                                    by: {{ comment.email }}, {{ comment.createdAt | date }}
+                                    <hr>
+                                    {{ comment.content }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                        <hr>
+                        {{ form(commentForm) }}
+                    </div>
+                    <div class="card-action">
+                        <button type="submit" class="waves-effect waves-light btn">
+                            <i class="material-icons left">save</i>Dodaj
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 {% endblock %}
