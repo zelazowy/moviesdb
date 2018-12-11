@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MovieController extends AbstractController
@@ -35,7 +36,6 @@ class MovieController extends AbstractController
     public function detailsAction(
         Request $request,
         EntityManagerInterface $entityManager,
-        EventDispatcherInterface $eventDispatcher,
         int $id
     ): Response
     {
@@ -43,21 +43,6 @@ class MovieController extends AbstractController
 
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
-
-        if ($request->isMethod(Request::METHOD_POST)) {
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-                $comment
-                    ->setMovie($movie)
-                    ->setStatus(Comment::STATUS_NEW);
-
-                $entityManager->persist($comment);
-                $entityManager->flush();
-
-                $eventDispatcher->dispatch(CommendAddedEvent::class, new CommendAddedEvent($comment));
-            }
-        }
 
         return $this->render(
             'Movie/details.html.twig',
@@ -67,5 +52,40 @@ class MovieController extends AbstractController
                 'commentForm' => $form->createView(),
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     * @Route("/movie/{id}/addComment", name="movie_add_comment", methods={"POST"})
+     */
+    public function addCommentAction(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $eventDispatcher,
+        Session $session,
+        Movie $movie
+    ): Response
+    {
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $comment
+                ->setMovie($movie)
+                ->setStatus(Comment::STATUS_NEW);
+
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            $eventDispatcher->dispatch(CommendAddedEvent::class, new CommendAddedEvent($comment));
+
+            $session->getFlashBag()->add('success', 'Thank you! Your comment will be visible after accepting by administrator');
+        } else {
+            $session->getFlashBag()->add('error', 'Something went wrong during adding your comment. Try again...');
+        }
+
+        return $this->redirectToRoute('movie_details', ['id' => $movie->getId()]);
     }
 }

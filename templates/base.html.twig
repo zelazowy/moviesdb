@@ -34,6 +34,13 @@
 
 <main>
     <div class="container">
+        {% for successFlash in app.session.flashBag.get('success') %}
+            <div class="card-panel light-green accent-2">{{ successFlash }}</div>
+        {% endfor %}
+        {% for errorFlash in app.session.flashBag.get('error') %}
+            <div class="card-panel red lighten-1">{{ errorFlash }}</div>
+        {% endfor %}
+
         <div class="section">
             {% block body %}{% endblock %}
         </div>

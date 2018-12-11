@@ -6,7 +6,7 @@
             <a class="waves-effect waves-light btn-large blue-grey deep-purple-text lighten-5"
                href="{{ url('movie_list', { 'page': page }) }}"><i class="material-icons left">arrow_back</i>back</a>
 
-            <form name="comment" method="post">
+            <form action="{{ url('movie_add_comment', { 'id': movie.id }) }}" name="comment" method="post">
                 <div class="card blue-grey lighten-5">
                     <div class="card-content deep-purple-text darken-4">
                         <span class="card-title">
