@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Movie;
+use App\Event\CommendAddedEvent;
 use App\Form\CommentType;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,7 +32,12 @@ class MovieController extends AbstractController
      * {@inheritdoc}
      * @Route("/movie/{id}", name="movie_details")
      */
-    public function detailsAction(Request $request, EntityManagerInterface $entityManager, int $id): Response
+    public function detailsAction(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $eventDispatcher,
+        int $id
+    ): Response
     {
         $movie = $entityManager->getRepository(Movie::class)->getWithAcceptedComments($id);
 
@@ -47,6 +54,8 @@ class MovieController extends AbstractController
 
                 $entityManager->persist($comment);
                 $entityManager->flush();
+
+                $eventDispatcher->dispatch(CommendAddedEvent::class, new CommendAddedEvent($comment));
             }
         }
 
