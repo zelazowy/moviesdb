@@ -30,8 +30,10 @@ class MovieController extends AbstractController
      * {@inheritdoc}
      * @Route("/movie/{id}", name="movie_details")
      */
-    public function detailsAction(Request $request, EntityManagerInterface $entityManager, Movie $movie): Response
+    public function detailsAction(Request $request, EntityManagerInterface $entityManager, int $id): Response
     {
+        $movie = $entityManager->getRepository(Movie::class)->getWithAcceptedComments($id);
+
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
 
