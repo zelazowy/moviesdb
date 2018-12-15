@@ -2,13 +2,25 @@
 
 namespace App\Repository;
 
+use Doctrine\ORM\Query;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use App\Entity\Comment;
 use App\Entity\Movie;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class MovieRepository extends EntityRepository
+/**
+ * @method Comment|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Comment|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Comment[]    findAll()
+ * @method Comment[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class MovieRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Movie::class);
+    }
+
     public function getAllQuery(string $sort = 'id', string $order = 'ASC'): Query
     {
         return $this

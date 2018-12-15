@@ -21,7 +21,7 @@ class MovieController extends AbstractController
      * {@inheritdoc}
      * @Route("/{page}", name="movie_list", defaults={"page"=1})
      */
-    public function listAction(EntityManagerInterface $entityManager, PaginatorInterface $paginator, int $page = 1): Response
+    public function list(EntityManagerInterface $entityManager, PaginatorInterface $paginator, int $page = 1): Response
     {
         $moviesQuery = $entityManager->getRepository(Movie::class)->getAllQuery();
         $pagination = $paginator->paginate($moviesQuery, $page);
@@ -33,7 +33,7 @@ class MovieController extends AbstractController
      * {@inheritdoc}
      * @Route("/movie/{id}", name="movie_details")
      */
-    public function detailsAction(
+    public function details(
         Request $request,
         EntityManagerInterface $entityManager,
         int $id
@@ -58,7 +58,7 @@ class MovieController extends AbstractController
      * {@inheritdoc}
      * @Route("/movie/{id}/addComment", name="movie_add_comment", methods={"POST"})
      */
-    public function addCommentAction(
+    public function addComment(
         Request $request,
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher,

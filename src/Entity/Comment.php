@@ -14,6 +14,12 @@ class Comment
     public const STATUS_ACCEPTED = 'accepted';
     public const STATUS_REJECTED = 'rejected';
 
+    public const STATUSES = [
+        self::STATUS_NEW,
+        self::STATUS_ACCEPTED,
+        self::STATUS_REJECTED,
+    ];
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

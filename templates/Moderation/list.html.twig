@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="header center">
+        total: {{ pagination.getTotalItemCount }}
+    </h1>
+    {% for comment in pagination %}
+        <div class="row">
+            <div class="col m10">
+                <p>
+                    {{ comment.content }}
+                </p>
+                added: {{ comment.createdAt | date }} to movie: <a href="{{ url('movie_details', { 'id': comment.movie.id }) }}">{{ comment.movie.title }}</a>
+            </div>
+            <div class="col m1">
+                <form method="post" action="{{ url('moderation_change_status', { 'id': comment.id, 'status': 'accepted' }) }}">
+                    <button type="submit" class="waves-effect waves-light btn">accept</button>
+                </form>
+            </div>
+            <div class="col m1">
+                <form method="post" action="{{ url('moderation_change_status', { 'id': comment.id, 'status': 'rejected' }) }}">
+                    <button type="submit" class="waves-effect waves-light btn">reject</button>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="navigation left-align">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock %}
