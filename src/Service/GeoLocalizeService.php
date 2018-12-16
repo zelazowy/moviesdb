@@ -23,7 +23,7 @@ class GeoLocalizeService
         return $this->client;
     }
 
-    public function byIP(string $ip): CountryValueObject
+    public function getData(string $ip): string
     {
         $response = $this->getClient()->get(self::API . $ip);
 
@@ -31,7 +31,12 @@ class GeoLocalizeService
             throw new \RuntimeException('Cannot connect to ip2country API');
         }
 
-        $country = json_decode($response->getBody()->getContents());
+        return $response->getBody()->getContents();
+    }
+
+    public function byIP(string $ip): CountryValueObject
+    {
+        $country = json_decode($this->getData($ip));
 
         return new CountryValueObject($country->countryCode, $country->countryName, $country->countryEmoji);
     }
