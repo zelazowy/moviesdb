@@ -6,6 +6,9 @@ use App\Entity\Comment;
 use App\Entity\Movie;
 use App\Event\CommendAddedEvent;
 use App\Form\CommentType;
+use App\Helper\FakeIpHelper;
+use App\Service\AvatarService;
+use App\Service\GeoLocalizeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -62,6 +65,8 @@ class MovieController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher,
+        AvatarService $avatarService,
+        GeoLocalizeService $geoLocalizeService,
         Session $session,
         Movie $movie
     ): Response
@@ -72,6 +77,19 @@ class MovieController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            try {
+                $comment->setAvatar($avatarService->getForEmail($comment->getEmail()));
+            } catch (\Exception $e) {
+            }
+
+            try {
+                $country = $geoLocalizeService->byIP(FakeIpHelper::get());
+                $comment
+                    ->setCountryCode($country->getCode())
+                    ->setCountryFlag($country->getFlag());
+            } catch (\Exception $e) {
+            }
+
             $comment
                 ->setMovie($movie)
                 ->setStatus(Comment::STATUS_NEW);

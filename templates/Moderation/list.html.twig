@@ -11,6 +11,10 @@
                     {{ comment.content }}
                 </p>
                 added: {{ comment.createdAt | date }} to movie: <a href="{{ url('movie_details', { 'id': comment.movie.id }) }}">{{ comment.movie.title }}</a>
+                {% if comment.countryCode and comment.countryFlag %}
+                    <hr>
+                    {{ comment.countryCode }}{{ comment.countryFlag }}
+                {% endif %}
             </div>
             <div class="col m1">
                 <form method="post" action="{{ url('moderation_change_status', { 'id': comment.id, 'status': 'accepted' }) }}">

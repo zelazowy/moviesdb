@@ -23,9 +23,14 @@
                         <ul class="collection">
                             {% for comment in movie.comments %}
                                 <li class="collection-item">
-                                    by: {{ comment.email }}, {{ comment.createdAt | date }}
+                                    <img src="{{ comment.avatar | default(asset('images/default_avatar.png')) }}" alt="avatar">
+                                    {{ comment.email }}, {{ comment.createdAt | date }}
                                     <hr>
                                     {{ comment.content }}
+                                    {% if comment.countryCode and comment.countryFlag %}
+                                        <hr>
+                                        {{ comment.countryCode }}{{ comment.countryFlag }}
+                                    {% endif %}
                                 </li>
                             {% endfor %}
                         </ul>

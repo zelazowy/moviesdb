@@ -60,6 +60,21 @@ class Comment
      */
     private $status;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $avatar;
+
+    /**
+     * @ORM\Column(type="string", length=2, nullable=true)
+     */
+    private $countryCode;
+
+    /**
+     * @ORM\Column(type="string", length=10, nullable=true)
+     */
+    private $countryFlag;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -133,6 +148,42 @@ class Comment
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): self
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function getCountryCode(): ?string
+    {
+        return $this->countryCode;
+    }
+
+    public function setCountryCode(?string $countryCode): self
+    {
+        $this->countryCode = $countryCode;
+
+        return $this;
+    }
+
+    public function getCountryFlag(): ?string
+    {
+        return $this->countryFlag;
+    }
+
+    public function setCountryFlag(?string $countryFlag): self
+    {
+        $this->countryFlag = $countryFlag;
 
         return $this;
     }
